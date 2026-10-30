@@ -89,6 +89,21 @@
     upd();
     ls.setItem('last', JSON.stringify([document.title.split(' — ')[0], page]));
   }
+
+  /* ---- شرح المحاور (content.js) ---- */
+  const pid = $('#notes') && $('#notes').dataset.id;
+  if (d && window.EXPL && pid && window.EXPL[pid]) {
+    $$('label', d).forEach((lb, i) => {
+      const t = window.EXPL[pid][i]; if (!t) return;
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'ex-b'; btn.textContent = 'اشرح'; btn.setAttribute('aria-expanded', 'false');
+      const p = document.createElement('p'); p.className = 'ex'; p.hidden = true; p.textContent = t;
+      btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); const o = p.hidden; p.hidden = !o; btn.setAttribute('aria-expanded', o); btn.textContent = o ? 'إخفاء' : 'اشرح'; });
+      lb.append(btn); lb.after(p);
+    });
+    const all = document.createElement('button'); all.type = 'button'; all.className = 'chip'; all.textContent = 'اعرض كل الشروح';
+    all.addEventListener('click', () => $$('.ex-b', d).forEach(b => b.getAttribute('aria-expanded') !== 'true' && b.click()));
+    d.before(all);
+  }
   $$('.pg[data-id]').forEach(e => {
     const a = rd('prog:' + e.dataset.id);
     if (a && a.some(Boolean)) { e.textContent = a.filter(Boolean).length + '/' + a.length; if (a.every(Boolean)) e.closest('.row')?.classList.add('done'); }

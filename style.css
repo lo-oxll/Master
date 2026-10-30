@@ -258,3 +258,10 @@ footer{border-top:1px solid var(--bd);padding:22px 18px;text-align:center;color:
 #v button[data-i]{background:var(--card);color:var(--tx);border:1px solid var(--bd);display:block;width:100%;text-align:start;padding:10px 14px}
 #v button[data-i]:not(:disabled):hover{border-color:var(--ac)}
 .panel select{padding:7px 10px;border:1px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--tx);font:inherit;margin:0 4px}
+
+/* ---------- شرح المحاور ---------- */
+.chk label{align-items:baseline}.chk label>span{flex:1}
+.ex-b{margin-inline-start:auto;background:none;border:1px solid var(--c);color:var(--c);border-radius:99px;padding:0 12px;font:inherit;font-size:.8rem;cursor:pointer;flex:none}
+.ex-b:hover{background:var(--c);color:#fff}
+.ex{margin:0 0 8px;padding:10px 16px;border-inline-start:3px solid var(--c);background:var(--ac-t);border-radius:0 var(--r) var(--r) 0;color:var(--tx);font-size:.95rem}
+#topics+*{}
