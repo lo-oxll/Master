@@ -3,12 +3,12 @@ const id=lab.dataset.lab,$=s=>lab.querySelector(s),R=Math.random;
 const tbl=(rows)=>!rows.length?'<p class="meta">لا نتائج</p>':'<div style="overflow-x:auto"><table><tr>'+Object.keys(rows[0]).map(k=>'<th>'+k+'</th>').join('')+'</tr>'+rows.map(r=>'<tr>'+Object.values(r).map(v=>'<td>'+v+'</td>').join('')+'</tr>').join('')+'</table></div>';
 function hist(cv,data,bins=30){const c=cv.getContext('2d'),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);
 const mn=Math.min(...data),mx=Math.max(...data),b=Array(bins).fill(0);data.forEach(v=>b[Math.min(bins-1,Math.floor((v-mn)/(mx-mn||1)*bins))]++);
-const m=Math.max(...b);c.fillStyle='#2d5bff';b.forEach((n,i)=>c.fillRect(i*w/bins+1,h-n/m*(h-4),w/bins-2,n/m*(h-4)))}
+const m=Math.max(...b);c.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--c').trim()||'#2d5bff';b.forEach((n,i)=>c.fillRect(i*w/bins+1,h-n/m*(h-4),w/bins-2,n/m*(h-4)))}
 const L={
 'db-concepts-7':()=>{const D={emp:[{id:1,name:'سارة',dept:'IT',salary:900},{id:2,name:'علي',dept:'HR',salary:700},{id:3,name:'نور',dept:'IT',salary:1100},{id:4,name:'عمر',dept:'Sales',salary:800},{id:5,name:'ليلى',dept:'HR',salary:950}],dept:[{dept:'IT',floor:3},{dept:'HR',floor:1},{dept:'Sales',floor:2}]};
 lab.innerHTML=`<p>جدولان: <b>emp</b>(id,name,dept,salary) و <b>dept</b>(dept,floor). اكتب استعلام SELECT ... FROM ... WHERE ... ORDER BY.</p><input id="s" value="SELECT name, salary FROM emp WHERE salary > 800 ORDER BY salary DESC"><button id="go">تشغيل</button><div id="o"></div>`;
 $('#go').onclick=()=>{const m=$('#s').value.match(/^\s*select\s+(.+?)\s+from\s+(\w+)(?:\s+where\s+(\w+)\s*(>=|<=|!=|=|>|<)\s*'?([^'\s;]+)'?)?(?:\s+order\s+by\s+(\w+)(?:\s+(asc|desc))?)?\s*;?\s*$/i);
-if(!m||!D[m[2]])return $('#o').innerHTML='<p style="color:#d33">استعلام غير مفهوم أو جدول غير موجود</p>';
+if(!m||!D[m[2]])return $('#o').innerHTML='<p class="err">استعلام غير مفهوم أو جدول غير موجود</p>';
 let r=D[m[2]].slice();if(m[3]){const v=isNaN(m[5])?m[5]:+m[5];r=r.filter(x=>({'=':x[m[3]]==v,'>':x[m[3]]>v,'<':x[m[3]]<v,'>=':x[m[3]]>=v,'<=':x[m[3]]<=v,'!=':x[m[3]]!=v})[m[4]])}
 if(m[6])r.sort((a,b)=>(a[m[6]]>b[m[6]]?1:-1)*(/desc/i.test(m[7])?-1:1));
 if(m[1].trim()!='*'){const c=m[1].split(',').map(s=>s.trim());r=r.map(x=>Object.fromEntries(c.map(k=>[k,x[k]])))}$('#o').innerHTML=tbl(r)};$('#go').click()},
@@ -53,7 +53,7 @@ const go=()=>{const t=$('#t').value,a=+$('#a').value,b=$('#b').value/100,P=[],X=
 if(t=='b'){for(let k=0;k<=a;k++){P.push(Math.exp(lf(a)-lf(k)-lf(a-k)+k*Math.log(b)+(a-k)*Math.log(1-b)));X.push(k)}mu=a*b;v=a*b*(1-b)}
 else if(t=='p'){const l=a/2;for(let k=0;k<=l*3+10;k++){P.push(Math.exp(-l+k*Math.log(l)-lf(k)));X.push(k)}mu=v=l}
 else{const s=a/10;for(let i=0;i<61;i++){const x=-4*s+i*8*s/60;P.push(Math.exp(-x*x/2/s/s));X.push(x)}mu=0;v=s*s}
-const c=$('#cv').getContext('2d'),m=Math.max(...P),w=480/P.length;c.clearRect(0,0,480,180);c.fillStyle='#2d5bff';P.forEach((p,i)=>c.fillRect(i*w+1,175-p/m*165,w-2,p/m*165));
+const c=$('#cv').getContext('2d'),m=Math.max(...P),w=480/P.length;c.clearRect(0,0,480,180);c.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--c').trim()||'#2d5bff';P.forEach((p,i)=>c.fillRect(i*w+1,175-p/m*165,w-2,p/m*165));
 $('#o').textContent='المتوسط = '+mu.toFixed(2)+'  ،  التباين = '+v.toFixed(2)};['t','a','b'].forEach(i=>$('#'+i).oninput=go);go()},
 'ci':()=>{lab.innerHTML=`<p>100 عينة من N(50,10): كم فترة ثقة تحتوي المتوسط الحقيقي 50؟</p>n: <input id="n" type="range" min="5" max="100" value="25"> مستوى: <select id="z"><option value="1.645">90%</option><option value="1.96" selected>95%</option><option value="2.576">99%</option></select><button id="go">أعد التوليد</button><canvas id="cv" width="480" height="260" style="max-width:100%"></canvas><p id="o"></p>`;
 const nr=()=>Math.sqrt(-2*Math.log(1-R()))*Math.cos(6.2832*R());
@@ -69,7 +69,7 @@ $('#o').textContent='logL('+p0+') = '+f(p0).toFixed(2)+'  ،  المقدّر ا�
 const nr=()=>Math.sqrt(-2*Math.log(1-R()))*Math.cos(6.2832*R());
 const go=()=>{const r=$('#r').value/100,P=[],c=$('#cv').getContext('2d');for(let i=0;i<150;i++){const a=nr(),b=nr();P.push([a,r*a+Math.sqrt(1-r*r)*b])}
 const mx=P.reduce((s,p)=>s+p[0],0)/150,my=P.reduce((s,p)=>s+p[1],0)/150;let sxy=0,sxx=0,syy=0;P.forEach(p=>{sxy+=(p[0]-mx)*(p[1]-my);sxx+=(p[0]-mx)**2;syy+=(p[1]-my)**2});const sl=sxy/sxx,ic=my-sl*mx;
-c.clearRect(0,0,320,320);c.fillStyle='#2d5bff';P.forEach(p=>{c.beginPath();c.arc(160+p[0]*50,160-p[1]*50,3,0,7);c.fill()});c.strokeStyle='#d33';c.beginPath();c.moveTo(0,160-(ic+sl*-3.2)*50);c.lineTo(320,160-(ic+sl*3.2)*50);c.stroke();
+c.clearRect(0,0,320,320);c.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--c').trim()||'#2d5bff';P.forEach(p=>{c.beginPath();c.arc(160+p[0]*50,160-p[1]*50,3,0,7);c.fill()});c.strokeStyle='#d33';c.beginPath();c.moveTo(0,160-(ic+sl*-3.2)*50);c.lineTo(320,160-(ic+sl*3.2)*50);c.stroke();
 $('#o').textContent='r العيّنة = '+(sxy/Math.sqrt(sxx*syy)).toFixed(3)+'  ،  y = '+ic.toFixed(2)+' + '+sl.toFixed(2)+'x'};$('#r').oninput=go;$('#go').onclick=go;go()},
 'inh':()=>{lab.innerHTML=`<p>ترتيب استدعاء البواني والهوادم في سلسلة الوراثة A ← B ← C.</p><label><input type="checkbox" id="v" checked> هادم افتراضي (virtual ~A / Overrides)</label> <button id="go">أنشئ C* عبر مؤشر A* ثم احذف</button><pre id="o"></pre>`;
 $('#go').onclick=()=>{const v=$('#v').checked;$('#o').textContent='A* p = new C();   // VB: Dim p As A = New C()\n\nA()\nB()\nC()\n\ndelete p;\n'+(v?'~C()\n~B()\n~A()\n✅ تحرير كامل':'~A()\n❌ لم يُستدعَ ~C و ~B: تسرّب موارد (سلوك غير معرّف)')};$('#go').click()},
