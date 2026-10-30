@@ -212,7 +212,7 @@ footer{border-top:1px solid var(--bd);padding:22px 18px;text-align:center;color:
   body.nav{overflow:hidden}
   main{padding:24px 16px 48px}
   .shelf{gap:8px;padding:0 2px}
-  .spine{padding:28px 10px 14px;min-height:190px}
+  .spine{padding:28px 10px 14px;min-height:150px}
   .spine h2{font-size:1.02rem}
   .spine p{display:none}
   .top{padding:0 12px;gap:8px}
@@ -233,3 +233,21 @@ footer{border-top:1px solid var(--bd);padding:22px 18px;text-align:center;color:
   a{color:#000}
 }
 [hidden]{display:none!important}
+
+/* ---------- الصفحة الرئيسية ---------- */
+.hero{padding:8px 0 4px;max-width:720px}
+.hero .lede{max-width:56ch;font-size:1.06rem}
+.hsearch{display:flex;gap:8px;margin:22px 0 12px}
+.hsearch .fi{flex:1;min-width:0;height:50px;font-size:1.02rem;border-radius:99px;padding-inline:20px;border-color:var(--bd2)}
+.hsearch .btn{height:50px;margin:0;padding:0 26px;border-radius:99px;--c:var(--ac)}
+.sugg{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sugg .chip{height:32px;padding:0 14px;font-size:.85rem;text-decoration:none;display:inline-flex;align-items:center}
+#cont:not(:empty){margin:22px 0 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.shelf-note{margin:10px 2px 0}
+.quick.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border:0}
+.quick.grid li{border:1px solid var(--bd);border-radius:var(--r2);background:var(--card);overflow:hidden;transition:border-color .15s}
+.quick.grid li:hover{border-color:var(--ac)}
+.quick.grid a{padding:14px 18px;font-weight:600}
+.quick.grid small{display:block;margin:2px 0 0;font-weight:400;font-size:.86rem;line-height:1.7}
+@media(max-width:860px){.quick.grid{grid-template-columns:1fr}.hsearch .btn{padding:0 18px}}
