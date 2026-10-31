@@ -31,6 +31,33 @@
   $$('#side a').forEach(a => a.addEventListener('click', () => nav(false)));
   const cur = $('#side [aria-current]'); cur && side && side.scrollTo({ top: Math.max(0, cur.offsetTop - 120) });
 
+
+  /* ---- روابط ناقصة في القائمة الجانبية (صفحات لم تُحدَّث) ---- */
+  if (side) {
+    if (!$('a[href="s-itm.html"]', side)) { const a = $('a[href="s-img.html"]', side); a && a.insertAdjacentHTML('afterend', '<a class="sl subj" style="--sc:var(--c-itm)" href="s-itm.html">🧭 إدارة تقنيات المعلومات</a>'); }
+    if (!$('a[href="notebook.html"]', side)) { const a = $('a[href="tools.html"]', side); a && a.insertAdjacentHTML('beforebegin', '<a class="sl" href="notebook.html">استوديو المذاكرة</a>'); }
+    side.insertAdjacentHTML('beforeend', '<div class="side-foot"><button type="button" id="bk-open">نسخة احتياطية للتقدم</button></div>');
+  }
+
+  /* ---- نسخة احتياطية: تصدير واستيراد JSON ---- */
+  const BK = /^(prog:|note:|bm:|sg:|sr:|last$|theme$)/;
+  $('#bk-open') && $('#bk-open').addEventListener('click', () => {
+    let dg = $('#bk-dlg');
+    if (!dg) {
+      dg = document.createElement('dialog'); dg.id = 'bk-dlg';
+      dg.innerHTML = '<h2>نسخة احتياطية</h2><p class="meta">تُحفظ بياناتك على هذا المتصفح فقط وتضيع إذا مُسح. صدّر ملفاً واحتفظ به، واستورده على أي جهاز.</p><div class="row2"><button class="btn" id="bk-ex" type="button">تصدير JSON</button><label class="btn ghost" style="cursor:pointer">استيراد<input id="bk-im" type="file" accept="application/json" hidden></label><button class="btn ghost" id="bk-x" type="button">إغلاق</button></div><p class="meta" id="bk-m"></p>';
+      body.append(dg);
+      $('#bk-x').onclick = () => dg.close();
+      $('#bk-ex').onclick = () => { const o = {}; for (let i = 0; i < ls.length; i++) { const k = ls.key(i); if (k && BK.test(k)) o[k] = ls.getItem(k); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 1, at: new Date().toISOString(), data: o }, null, 1)], { type: 'application/json' })); a.download = 'مرجع-نسخة-' + new Date().toISOString().slice(0, 10) + '.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); $('#bk-m').textContent = 'صُدّر ' + Object.keys(o).length + ' عنصراً.'; };
+      $('#bk-im').onchange = async e => { try { const j = JSON.parse(await e.target.files[0].text()); let n = 0; Object.entries(j.data || {}).forEach(([k, v]) => { if (BK.test(k) && typeof v === 'string') { ls.setItem(k, v); n++; } }); $('#bk-m').textContent = 'استُورد ' + n + ' عنصراً. أعد تحميل الصفحة.'; setTimeout(() => location.reload(), 900); } catch (err) { $('#bk-m').textContent = 'ملف غير صالح.'; } };
+    }
+    dg.showModal();
+  });
+
+  /* ---- التطبيق دون اتصال (PWA) ---- */
+  if (!$('link[rel=manifest]')) document.head.insertAdjacentHTML('beforeend', '<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">');
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+
   /* ---- اختصارات لوحة المفاتيح ---- */
   const topQ = $('.top input[type=search]');
   if (topQ && !topQ.nextElementSibling) topQ.insertAdjacentHTML('afterend', '<kbd aria-hidden="true">/</kbd>');

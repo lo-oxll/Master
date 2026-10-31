@@ -265,3 +265,52 @@ footer{border-top:1px solid var(--bd);padding:22px 18px;text-align:center;color:
 .ex-b:hover{background:var(--c);color:#fff}
 .ex{margin:0 0 8px;padding:10px 16px;border-inline-start:3px solid var(--c);background:var(--ac-t);border-radius:0 var(--r) var(--r) 0;color:var(--tx);font-size:.95rem}
 #topics+*{}
+
+/* ==========================================================
+   الإصدار 2 — إطار داكن وورقة محتوى فاتحة
+   ========================================================== */
+:root{--c-itm:#6a3fc2;--s-itm:#5a32a8;--navy:#0e1a33;--gold:#e0b45a;--ac:#1b3f94;--ac-t:rgba(27,63,148,.08)}
+[data-theme=dark]{--ac-t:rgba(143,176,255,.12);--c-itm:#b79bff;--navy:#0a1224;--ac:#8fb0ff;--bg:#0f1624}
+.t-itm{--c:var(--c-itm)}
+a.spine.t-itm{--sb:var(--s-itm)}
+body{background:var(--navy)}
+.top,#side{--tx:#e9eefa;--mu:#9fb0d0;--bd:rgba(255,255,255,.12);--card:#15264a;--bg:rgba(255,255,255,.07);--ac:var(--gold);--ac-t:rgba(255,255,255,.08);--c:var(--gold);--bd2:rgba(255,255,255,.22)}
+.top{background:var(--navy);backdrop-filter:none;border-bottom:0;height:64px}
+#side{background:var(--navy);border-inline-end:0;height:calc(100vh - 64px);top:64px}
+.shell{max-width:none;grid-template-columns:292px minmax(0,1fr);background:var(--navy)}
+main{background:var(--bg);color:var(--tx);border-start-start-radius:28px;min-height:calc(100vh - 64px);padding:40px clamp(18px,4vw,56px) 72px}
+main .wrap{max-width:900px}
+html{--top:64px}
+.top form input[type=search]{color:#fff}
+.top form input::placeholder{color:#9fb0d0}
+.brand{color:#fff}
+.brand::before{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#b8872c);box-shadow:inset 0 0 0 6px rgba(14,26,51,.35)}
+.sl{color:#cfd9ee;padding:8px 14px}
+.sl:hover{background:rgba(255,255,255,.07);color:#fff}
+.sl[aria-current]{background:rgba(224,180,90,.14);color:#fff}
+.sg{color:#7f93bb;font-size:.78rem}
+.chs .sl{color:#9fb0d0}.chs .sl[aria-current]{color:#fff}
+.page-h{border:0;padding:0;margin-bottom:30px}
+.page-h h1{font-size:clamp(1.9rem,1.3rem + 2.4vw,2.8rem);line-height:1.3}
+.page-h::after{content:"";display:block;width:64px;height:4px;border-radius:4px;background:var(--c);margin-top:16px}
+.panel,.rows,details,.term,.quick.grid li{border-radius:14px}
+.panel{box-shadow:0 1px 0 var(--bd),0 14px 30px -22px rgba(14,26,51,.35)}
+.spine{border-radius:12px 12px 0 0}
+.hero{max-width:760px}
+.hero h1{font-size:clamp(2.2rem,1.4rem + 3vw,3.4rem)}
+footer{background:var(--navy);color:#9fb0d0;border-top:1px solid rgba(255,255,255,.1)}footer a{color:var(--gold)}
+@media(max-width:860px){main{border-radius:20px 20px 0 0;padding-top:28px}#side{background:var(--navy)}.shell{display:block}}
+
+/* ---------- نافذة النسخ الاحتياطي ومراجعة الحفظ ---------- */
+dialog{border:1px solid var(--bd);border-radius:16px;background:var(--card);color:var(--tx);max-width:min(460px,92vw);padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+dialog::backdrop{background:rgba(6,10,20,.6)}
+dialog h2{margin:0 0 8px}dialog .row2{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.side-foot{margin:22px 8px 0;padding-top:14px;border-top:1px solid rgba(255,255,255,.12)}
+.side-foot button{width:100%;background:rgba(255,255,255,.07);color:#e9eefa;border:1px solid rgba(255,255,255,.14);border-radius:var(--r);padding:8px 12px;font:inherit;font-size:.88rem;cursor:pointer;margin-bottom:6px;text-align:start}
+.side-foot button:hover{background:rgba(255,255,255,.14)}
+.today{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:26px 0}
+.today>.panel{margin:0}.today h2{font-size:1.1rem;margin:0 0 10px}
+.today .big{font:700 1.8rem var(--hd)}
+.srbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.srbar .no{background:var(--err)!important}.srbar .yes{background:var(--ok)!important}
+@media(max-width:860px){.today{grid-template-columns:1fr}}
