@@ -15,10 +15,13 @@
   const th = $('#theme');
   const meta = document.querySelector('meta[name=theme-color]') || Object.assign(document.createElement('meta'), { name: 'theme-color' });
   document.head.append(meta);
-  const applyTheme = d => { root.dataset.theme = d; meta.content = d === 'dark' ? '#151c27' : '#ffffff'; th && th.setAttribute('aria-pressed', d === 'dark'); };
-  th && (th.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>');
-  const mnb = $('#menu'); mnb && (mnb.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>');
-  applyTheme(root.dataset.theme || 'light');
+  const ICON = { sun: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>', moon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>', menu: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' };
+  const mnb = $('#menu'); mnb && (mnb.innerHTML = ICON.menu, mnb.title = 'القائمة الجانبية');
+  const applyTheme = d => {
+    root.dataset.theme = d; meta.content = '#0e1a33';
+    if (th) { th.innerHTML = d === 'dark' ? ICON.sun : ICON.moon; th.setAttribute('aria-pressed', d === 'dark'); th.title = d === 'dark' ? 'التبديل إلى الوضع النهاري' : 'التبديل إلى الوضع الليلي'; }
+  };
+  applyTheme(root.dataset.theme || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'));
   th && th.addEventListener('click', () => { const d = root.dataset.theme === 'dark' ? 'light' : 'dark'; applyTheme(d); ls.setItem('theme', d); });
 
   /* ---- القائمة الجانبية (جوال) ---- */
@@ -26,7 +29,12 @@
   let bd = $('.backdrop');
   if (side && !bd) { bd = document.createElement('div'); bd.className = 'backdrop'; side.after(bd); }
   const nav = open => { body.classList.toggle('nav', open); mn && mn.setAttribute('aria-expanded', open); };
-  mn && mn.addEventListener('click', () => nav(!body.classList.contains('nav')));
+  const wide = () => matchMedia('(min-width:861px)').matches;
+  if (wide() && ls.getItem('side') === 'off') body.classList.add('side-off');
+  mn && mn.addEventListener('click', () => {
+    if (wide()) { const off = body.classList.toggle('side-off'); ls.setItem('side', off ? 'off' : 'on'); mn.setAttribute('aria-expanded', !off); }
+    else nav(!body.classList.contains('nav'));
+  });
   bd && bd.addEventListener('click', () => nav(false));
   $$('#side a').forEach(a => a.addEventListener('click', () => nav(false)));
   const cur = $('#side [aria-current]'); cur && side && side.scrollTo({ top: Math.max(0, cur.offsetTop - 120) });
@@ -55,7 +63,7 @@
   });
 
   /* ---- التطبيق دون اتصال (PWA) ---- */
-  if (!$('link[rel=manifest]')) document.head.insertAdjacentHTML('beforeend', '<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">');
+  if (!$('link[rel=manifest]')) document.head.insertAdjacentHTML('beforeend', '<link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" href="favicon.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">');
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
   /* ---- اختصارات لوحة المفاتيح ---- */

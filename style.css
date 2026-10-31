@@ -314,3 +314,17 @@ dialog h2{margin:0 0 8px}dialog .row2{display:flex;gap:8px;flex-wrap:wrap;margin
 .srbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .srbar .no{background:var(--err)!important}.srbar .yes{background:var(--ok)!important}
 @media(max-width:860px){.today{grid-template-columns:1fr}}
+
+/* ---------- زر القائمة على الشاشات الكبيرة + تباين الوضع الليلي ---------- */
+@media(min-width:861px){
+  #menu{display:inline-grid}
+  .shell{transition:grid-template-columns .2s ease}
+  body.side-off .shell{grid-template-columns:0 minmax(0,1fr)}
+  body.side-off #side{visibility:hidden;overflow:hidden;padding:0;border:0}
+  body.side-off main{border-start-end-radius:28px}
+}
+.ib{color:#e9eefa;border-color:rgba(255,255,255,.2)}
+.ib:hover{background:rgba(255,255,255,.12)}
+[data-theme=dark]{--bg:#141f33;--card:#1a2740;--bd:#2a3956}
+[data-theme=dark] .hsearch .btn,[data-theme=dark] .today .btn{color:#0a1224}
+[data-theme=dark] .chip[aria-pressed=true],[data-theme=dark] #lab button,[data-theme=dark] #tools button,[data-theme=dark] .tabs button.on,[data-theme=dark] #v button:not([data-i]){color:#0a1224}
